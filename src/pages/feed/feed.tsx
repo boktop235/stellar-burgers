@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import {
-  getFeeds,
+  fetchFeeds,
   getFeedOrders,
   getFeedLoading
 } from '../../services/slices/feedSlice';
@@ -14,12 +14,14 @@ export const Feed = () => {
   const loading = useSelector(getFeedLoading);
 
   useEffect(() => {
-    dispatch(getFeeds());
+    dispatch(fetchFeeds());
   }, [dispatch]);
 
   if (loading) {
     return <Preloader />;
   }
 
-  return <FeedUI orders={orders} handleGetFeeds={() => dispatch(getFeeds())} />;
+  return (
+    <FeedUI orders={orders} handleGetFeeds={() => dispatch(fetchFeeds())} />
+  );
 };
