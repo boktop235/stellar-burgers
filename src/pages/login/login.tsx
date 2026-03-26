@@ -1,7 +1,6 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { useDispatch } from '../../services/store';
 import { loginUser } from '../../services/slices/userSlice';
-import { useNavigate } from 'react-router-dom';
 import { LoginUI } from '@ui-pages';
 
 export const Login: FC = () => {
@@ -9,14 +8,12 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setError('');
     try {
       await dispatch(loginUser({ email, password })).unwrap();
-      navigate('/profile');
     } catch (err) {
       setError('Ошибка входа. Проверьте email и пароль.');
     }

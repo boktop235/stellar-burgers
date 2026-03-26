@@ -7,8 +7,13 @@ import {
   getFeedLoading
 } from '../../services/slices/feedSlice';
 import { getIngredients } from '../../services/slices/ingredientsSlice';
+import { TIngredient } from '../../utils/types';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
+
+type TIngredientsWithCount = {
+  [key: string]: TIngredient & { count: number };
+};
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
@@ -29,7 +34,7 @@ export const OrderInfo: FC = () => {
     const date = new Date(selectedOrder.createdAt);
 
     const ingredientsInfo = selectedOrder.ingredients.reduce(
-      (acc: { [key: string]: any }, item: string) => {
+      (acc: TIngredientsWithCount, item: string) => {
         const ingredient = ingredients.find((ing) => ing._id === item);
         if (ingredient) {
           if (!acc[item]) {
@@ -44,7 +49,8 @@ export const OrderInfo: FC = () => {
     );
 
     const total = Object.values(ingredientsInfo).reduce(
-      (acc: number, item: any) => acc + item.price * item.count,
+      (acc: number, item: TIngredient & { count: number }) =>
+        acc + item.price * item.count,
       0
     );
 

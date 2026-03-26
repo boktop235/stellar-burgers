@@ -11,9 +11,8 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production'
 });
 
-// Для отладки
-if (typeof window !== 'undefined') {
-  (window as any).store = store;
+if (process.env.NODE_ENV === 'development') {
+  (window as Window & { store?: typeof store }).store = store;
 }
 
 export type RootState = ReturnType<typeof rootReducer>;
